@@ -1,44 +1,43 @@
-//p449-Part04-Chapter11-InheritAssignOperation
+//p452-Part04-Chapter11-문제2
 #include <iostream>
+#include <string>
 
-class First
+class Book
 {
 private:
-	int num1, num2;
+	std::string title;
+	std::string isbn;
+	int price;
 public:
-	First(int n1=0, int n2=0) : num1(n1), num2(n2) { }
-	void ShowData() { std::cout << num1 << ", " << num2 << std::endl; }
-	First& operator=(const First& ref)
+	Book(std::string _title, std::string _isbn, int _price) : title(_title), isbn(_isbn), price(_price) { }
+	void ShowBookInfo()
 	{
-		std::cout << "First& operator=()" << std::endl;
-		num1 = ref.num1;
-		num2 = ref.num2;
-		return *this;
+		std::cout << "제목: " << title << std::endl;
+		std::cout << "ISBN: " << isbn << std::endl;
+		std::cout << "가격: " << price << std::endl;
 	}
 };
 
-class Second : public First
+class EBook : public Book
 {
 private:
-	int num3, num4;
+	std::string DRMKey;
 public:
-	Second(int n1, int n2, int n3, int n4) : First(n1, n2), num3(n3), num4(n4) { }
-	void ShowData() { First::ShowData(); std::cout << num3 << ", " << num4 << std::endl; }
-	Second& operator=(const Second& ref)
+	EBook(std::string _title, std::string _isbn, int _price, std::string _DRMKey) : Book(_title, _isbn, _price), DRMKey(_DRMKey) { }
+	void ShowEBookInfo()
 	{
-		std::cout << "Second& operator=()" << std::endl;
-		num3 = ref.num3;
-		num4 = ref.num4;
-		return *this;
+		ShowBookInfo();
+		std::cout << "인증키: " << DRMKey << std::endl;
 	}
 };
 
 int main()
 {
-	Second ssrc(111, 222, 333, 444);
-	Second scpy(0, 0, 0, 0);
-	scpy = ssrc;
-	scpy.ShowData();
+	Book book("좋은 C++", "555-12345-890-0", 20000);
+	book.ShowBookInfo();
+	std::cout << std::endl;
+	EBook ebook("좋은 C++ ebook", "555-12345-890-1", 10000, "fdx9w0i8kiw");
+	ebook.ShowEBookInfo();
 
 	return 0;
 }
