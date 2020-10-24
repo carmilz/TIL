@@ -1,43 +1,90 @@
-//p452-Part04-Chapter11-문제2
+//p488-Part04-Chapter11-SortFunctor.cpp
 #include <iostream>
-#include <string>
 
-class Book
+class SortRule
 {
-private:
-	std::string title;
-	std::string isbn;
-	int price;
 public:
-	Book(std::string _title, std::string _isbn, int _price) : title(_title), isbn(_isbn), price(_price) { }
-	void ShowBookInfo()
+	virtual bool operator()(int num1, int num2) const = 0;
+};
+
+class AscendingSort : public SortRule
+{
+public:
+	bool operator()(int num1, int num2) const
 	{
-		std::cout << "제목: " << title << std::endl;
-		std::cout << "ISBN: " << isbn << std::endl;
-		std::cout << "가격: " << price << std::endl;
+		if (num1 > num2)
+			return true;
+		else
+			return false;
 	}
 };
 
-class EBook : public Book
+class DescendingSort : public SortRule
+{
+public:
+	bool operator()(int num1, int num2) const
+	{
+		if (num1 < num2)
+			return true;
+		else
+			return false;
+	}
+};
+
+class DataStorage
 {
 private:
-	std::string DRMKey;
+	int* arr;
+	int idx;
+	const int MAX_LEN;
 public:
-	EBook(std::string _title, std::string _isbn, int _price, std::string _DRMKey) : Book(_title, _isbn, _price), DRMKey(_DRMKey) { }
-	void ShowEBookInfo()
+	DataStorage(int arrlen) : idx(0), MAX_LEN(arrlen) { arr = new int[MAX_LEN]; }
+	void AddData(int num)
 	{
-		ShowBookInfo();
-		std::cout << "인증키: " << DRMKey << std::endl;
+		if (MAX_LEN <= idx)
+		{
+			std::cout << "오류: 더 이상 저장 불가" << std::endl;
+			return;
+		}
+		arr[idx++] = num;
+	}
+	void ShowAllData()
+	{
+		for (int i = 0; i < idx; i++)
+			std::cout << arr[i] << ' ';
+		std::cout << std::endl;
+	}
+	void SortData(const SortRule& functor)
+	{
+		for (int i = 0; i < (idx - 1); i++)
+		{
+			for (int j = 0; j < (idx - 1) - i; j++)
+			{
+				if (functor(arr[j], arr[j + 1]))
+				{
+					int temp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = temp;
+				}
+			}
+		}
 	}
 };
 
 int main()
 {
-	Book book("좋은 C++", "555-12345-890-0", 20000);
-	book.ShowBookInfo();
-	std::cout << std::endl;
-	EBook ebook("좋은 C++ ebook", "555-12345-890-1", 10000, "fdx9w0i8kiw");
-	ebook.ShowEBookInfo();
+	DataStorage storage(5);
+	storage.AddData(40);
+	storage.AddData(30);
+	storage.AddData(50);
+	storage.AddData(20);
+	storage.AddData(10);
+
+	storage.SortData(AscendingSort());
+	storage.ShowAllData();
+
+	storage.SortData(DescendingSort());
+	storage.ShowAllData();
 
 	return 0;
 }
