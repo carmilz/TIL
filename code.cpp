@@ -1,90 +1,28 @@
-//p488-Part04-Chapter11-SortFunctor.cpp
+//p492-Part04-Chapter11-ConvToPrime.cpp
 #include <iostream>
 
-class SortRule
-{
-public:
-	virtual bool operator()(int num1, int num2) const = 0;
-};
-
-class AscendingSort : public SortRule
-{
-public:
-	bool operator()(int num1, int num2) const
-	{
-		if (num1 > num2)
-			return true;
-		else
-			return false;
-	}
-};
-
-class DescendingSort : public SortRule
-{
-public:
-	bool operator()(int num1, int num2) const
-	{
-		if (num1 < num2)
-			return true;
-		else
-			return false;
-	}
-};
-
-class DataStorage
+class Number
 {
 private:
-	int* arr;
-	int idx;
-	const int MAX_LEN;
+	int num;
 public:
-	DataStorage(int arrlen) : idx(0), MAX_LEN(arrlen) { arr = new int[MAX_LEN]; }
-	void AddData(int num)
+	Number(int n = 0) : num(n) { std::cout << "Number(int n = 0)" << std::endl; }
+	Number& operator=(const Number& ref)
 	{
-		if (MAX_LEN <= idx)
-		{
-			std::cout << "오류: 더 이상 저장 불가" << std::endl;
-			return;
-		}
-		arr[idx++] = num;
+		std::cout << "operator=()" << std::endl;
+		num = ref.num;
+		return *this;
 	}
-	void ShowAllData()
-	{
-		for (int i = 0; i < idx; i++)
-			std::cout << arr[i] << ' ';
-		std::cout << std::endl;
-	}
-	void SortData(const SortRule& functor)
-	{
-		for (int i = 0; i < (idx - 1); i++)
-		{
-			for (int j = 0; j < (idx - 1) - i; j++)
-			{
-				if (functor(arr[j], arr[j + 1]))
-				{
-					int temp = arr[j];
-					arr[j] = arr[j + 1];
-					arr[j + 1] = temp;
-				}
-			}
-		}
-	}
+	operator int() { return num; }
+	void ShowNumber() { std::cout << num << std::endl; }
 };
 
 int main()
 {
-	DataStorage storage(5);
-	storage.AddData(40);
-	storage.AddData(30);
-	storage.AddData(50);
-	storage.AddData(20);
-	storage.AddData(10);
-
-	storage.SortData(AscendingSort());
-	storage.ShowAllData();
-
-	storage.SortData(DescendingSort());
-	storage.ShowAllData();
+	Number num1;
+	num1 = 30;
+	Number num2 = num1 + 20;
+	num2.ShowNumber();
 
 	return 0;
 }
