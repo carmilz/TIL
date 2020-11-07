@@ -1,29 +1,21 @@
-//p492-Part04-Chapter11-ConvToPrime.cpp
-//Test
+//p568-Part04-Chapter14-ClassTemplateSpecialization.cpp
 #include <iostream>
 
-class Number
+template <typename T>
+class Point
 {
 private:
-	int num;
+	T xpos, ypos;
 public:
-	Number(int n = 0) : num(n) { std::cout << "Number(int n = 0)" << std::endl; }
-	Number& operator=(const Number& ref)
-	{
-		std::cout << "operator=()" << std::endl;
-		num = ref.num;
-		return *this;
-	}
-	operator int() { return num; }
-	void ShowNumber() { std::cout << num << std::endl; }
+	Point(T x = 0, T y = 0) : xpos(x), ypos(y) {}
+	void ShowPosition() const { std::cout << '[' << xpos << ", " << ypos << ']' << std::endl; }
 };
+
+//다음 시간에..
 
 int main()
 {
-	Number num1;
-	num1 = 30;
-	Number num2 = num1 + 20;
-	num2.ShowNumber();
+	//다음 시간에..
 
-	return 0;
+	system("pause");
 }
